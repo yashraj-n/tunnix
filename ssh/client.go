@@ -8,6 +8,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+// Attempts to connect to remote server and returns client, motd, and error
 func AttemptConnection(config config.CliConfig) (*ssh.Client, string, error) {
 	sshConfig := &ssh.ClientConfig{
 		User: config.Username,

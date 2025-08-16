@@ -8,6 +8,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+// Creates a tunnel on the remote server and returns a listener
 func CreateTunnel(serverConn *ssh.Client, localPort int, remotePort int) (net.Listener, error) {
 	listener, err := serverConn.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", remotePort))
 	if err != nil {

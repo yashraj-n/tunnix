@@ -7,6 +7,7 @@ import (
 	"net"
 )
 
+// Accepts connections from remote server and handles them
 func AcceptConnections(listener net.Listener, localPort int) {
 	for {
 		remoteConn, err := listener.Accept()
@@ -19,6 +20,7 @@ func AcceptConnections(listener net.Listener, localPort int) {
 	}
 }
 
+// Handles a single connection from remote server
 func handleConnection(remoteConn net.Conn, localPort int) {
 	defer remoteConn.Close()
 	localConn, err := net.Dial("tcp", fmt.Sprintf("localhost:%d", localPort))

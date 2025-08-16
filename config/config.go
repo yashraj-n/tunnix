@@ -8,6 +8,7 @@ import (
 	"github.com/lmittmann/tint"
 )
 
+// Contains config from CLI
 type CliConfig struct {
 	Username   string
 	Password   string
@@ -17,6 +18,7 @@ type CliConfig struct {
 	RemotePort int
 }
 
+// Sets up slog with colors
 func SetupLogger() {
 	slog.SetDefault(slog.New(tint.NewHandler(os.Stdout, &tint.Options{
 		Level:      slog.LevelDebug,
@@ -26,6 +28,7 @@ func SetupLogger() {
 	})))
 }
 
+// Parses CLI flags and returns config
 func GetCliConfig() CliConfig {
 	var (
 		password  = flag.String("password", "", "Password to use for SSH authentication")
