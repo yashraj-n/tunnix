@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  tunnix-ssg-server:
+    build: .
+    container_name: tunnix-ssh-server
+    ports:
+      - "12000:12000"
+      - "12001:12001"
+    environment:
+      - SSH_API_KEY=${SSH_API_KEY}
+    restart: unless-stopped
+    networks:
+      - tunnel-network
+
+networks:
+  tunnel-network:
+    driver: bridge
