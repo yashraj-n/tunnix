@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: |
           mkdir -p dist
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/myapp-${{ matrix.goos }}-${{ matrix.goarch }} .
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/tunnix-${{ matrix.goos }}-${{ matrix.goarch }} .
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
