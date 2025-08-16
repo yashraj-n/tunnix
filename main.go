@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -15,7 +16,7 @@ func main() {
 	cliConfig := config.GetCliConfig()
 	slog.Info("Attempting to connect to remote server", "server", cliConfig.RemoteIp)
 
-	serverConn, err := ssh.AttemptConnection(cliConfig)
+	serverConn, motd, err := ssh.AttemptConnection(cliConfig)
 
 	if err != nil {
 		slog.Error("Failed to connect to remote server", "error", err)
@@ -32,5 +33,6 @@ func main() {
 	defer listener.Close()
 
 	slog.Info("Connected to remote server")
+	fmt.Println(motd)
 	network.AcceptConnections(listener, cliConfig.LocalPort)
 }

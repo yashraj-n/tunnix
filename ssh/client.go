@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func AttemptConnection(config config.CliConfig) (*ssh.Client, error) {
+func AttemptConnection(config config.CliConfig) (*ssh.Client, string, error) {
 	sshConfig := &ssh.ClientConfig{
 		User: config.Username,
 		Auth: []ssh.AuthMethod{
@@ -19,9 +19,20 @@ func AttemptConnection(config config.CliConfig) (*ssh.Client, error) {
 	serverConn, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", config.RemoteIp, config.SSHPort), sshConfig)
 
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
-	return serverConn, nil
+	session, err := serverConn.NewSession()
+	if err != nil {
+		return nil, "", err
+	}
+
+	motd, err := session.CombinedOutput("cat /etc/motd")
+	if err != nil {
+		return nil, "", err
+	}
+
+	session.Close()
+	return serverConn, string(motd), nil
 
 }

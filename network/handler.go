@@ -32,13 +32,11 @@ func handleConnection(remoteConn net.Conn, localPort int) {
 	done := make(chan bool, 2) // bidirectional copy channel
 
 	go func() {
-		slog.Info("Starting to copy from remote to local")
 		io.Copy(localConn, remoteConn)
 		done <- true
 	}()
 
 	go func() {
-		slog.Info("Starting to copy from local to remote")
 		io.Copy(remoteConn, localConn)
 		done <- true
 	}()

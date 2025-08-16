@@ -6,7 +6,8 @@ services:
       - "12000:12000"
       - "12001:12001"
     environment:
-      - SSH_API_KEY=${SSH_API_KEY}
+      - SSH_API_KEY=${SSH_API_KEY} # SSH API Key for client, will be used as password for user
+      - TUNNIX_FQDN=${TUNNIX_FQDN} # URL where port will be mapped to
     restart: unless-stopped
     networks:
       - tunnel-network
