@@ -7,7 +7,7 @@ fi
 
 # MOTD
 echo "--------------------------------" >> /etc/motd
-echo "Welcome to Tunnix" > /etc/motd
+echo "Welcome to Tunnix" >> /etc/motd
 echo "Please start this repo if you find this project useful https://github.com/yashraj-n/tunnix" >> /etc/motd
 echo "--------------------------------" >> /etc/motd
 echo "Use this URL: $TUNNIX_FQDN" >> /etc/motd
