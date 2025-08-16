@@ -2,14 +2,12 @@ package ssh
 
 import (
 	"fmt"
-	"log/slog"
-	"os"
 
 	"github.com/yashraj-n/tunnix/config"
 	"golang.org/x/crypto/ssh"
 )
 
-func AttemptConnection(config config.CliConfig) *ssh.Client {
+func AttemptConnection(config config.CliConfig) (*ssh.Client, error) {
 	sshConfig := &ssh.ClientConfig{
 		User: config.Username,
 		Auth: []ssh.AuthMethod{
@@ -21,12 +19,9 @@ func AttemptConnection(config config.CliConfig) *ssh.Client {
 	serverConn, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", config.RemoteIp, config.SSHPort), sshConfig)
 
 	if err != nil {
-		slog.Error("Failed to connect to remote server", "error", err)
-		os.Exit(1)
+		return nil, err
 	}
 
-	defer serverConn.Close()
-
-	return serverConn
+	return serverConn, nil
 
 }

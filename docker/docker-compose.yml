@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  tunnix-ssg-server:
+  tunnix:
     build: .
     container_name: tunnix-ssh-server
     ports:

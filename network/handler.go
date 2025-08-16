@@ -1,0 +1,48 @@
+package network
+
+import (
+	"fmt"
+	"io"
+	"log/slog"
+	"net"
+)
+
+func AcceptConnections(listener net.Listener, localPort int) {
+	for {
+		remoteConn, err := listener.Accept()
+		if err != nil {
+			slog.Error("Failed to accept connection", "error", err)
+			continue
+		}
+
+		go handleConnection(remoteConn, localPort)
+	}
+}
+
+func handleConnection(remoteConn net.Conn, localPort int) {
+	defer remoteConn.Close()
+	localConn, err := net.Dial("tcp", fmt.Sprintf("localhost:%d", localPort))
+
+	if err != nil {
+		slog.Error("Failed to connect to local port", "error", err)
+		return
+	}
+	defer localConn.Close()
+
+	done := make(chan bool, 2) // bidirectional copy channel
+
+	go func() {
+		slog.Info("Starting to copy from remote to local")
+		io.Copy(localConn, remoteConn)
+		done <- true
+	}()
+
+	go func() {
+		slog.Info("Starting to copy from local to remote")
+		io.Copy(remoteConn, localConn)
+		done <- true
+	}()
+
+	<-done
+
+}

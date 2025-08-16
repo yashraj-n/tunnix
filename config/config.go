@@ -37,6 +37,7 @@ func GetCliConfig() CliConfig {
 
 	if *password == "" || *remoteIp == "" || *localPort == 0 {
 		slog.Error("Missing required flags", "password", *password, "remoteIp", *remoteIp, "localPort", *localPort)
+		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
