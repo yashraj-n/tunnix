@@ -1,6 +1,7 @@
 package ssh
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/yashraj-n/tunnix/config"
@@ -19,17 +20,17 @@ func AttemptConnection(config config.CliConfig) (*ssh.Client, string, error) {
 	serverConn, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", config.RemoteIp, config.SSHPort), sshConfig)
 
 	if err != nil {
-		return nil, "", err
+		return nil, "", errors.New("failed to connect to remote server: " + err.Error())
 	}
 
 	session, err := serverConn.NewSession()
 	if err != nil {
-		return nil, "", err
+		return nil, "", errors.New("failed to create session: " + err.Error())
 	}
 
 	motd, err := session.CombinedOutput("cat /etc/motd")
 	if err != nil {
-		return nil, "", err
+		return nil, "", errors.New("failed to get MOTD: " + err.Error())
 	}
 
 	session.Close()
